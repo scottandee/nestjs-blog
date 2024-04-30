@@ -1,26 +1,26 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'users'})
+@Entity({ name: 'users' })
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({
-      unique: true,
-    })
-    username: string;
+  @Column({
+    unique: true,
+  })
+  username: string;
 
-    @Column({
-      unique: true,
-    })
-    email: string;
+  @Column({
+    unique: true,
+  })
+  email: string;
 
-    @Column({
-      nullable: false,
-    })
-    password: string;
+  @Column({
+    nullable: false,
+  })
+  password: string;
 
-    constructor(user: Partial<User>) {
-      Object.assign(this, user)
-    }
+  constructor(user: Partial<User>) {
+    Object.assign(this, user);
+  }
 }

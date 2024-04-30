@@ -4,8 +4,8 @@ import { SignInDto } from './dto/sign-in.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from './dto/log-in.dto';
-require("dotenv").config();
-
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Injectable()
 export class AuthService {
@@ -28,14 +28,14 @@ export class AuthService {
   async signIn(signInDto: SignInDto) {
     const user = await this.usersService.findOne(signInDto.username);
     if (!user) {
-        throw new UnauthorizedException()
-      }
-    const owner = await bcrypt.compare(signInDto.password, user.password)
+      throw new UnauthorizedException();
+    }
+    const owner = await bcrypt.compare(signInDto.password, user.password);
     if (!owner) {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException();
     }
     const payload = { sub: user.id, username: user.username };
 
-    return { access_token: await this.jwtService.signAsync(payload) }
+    return { access_token: await this.jwtService.signAsync(payload) };
   }
 }

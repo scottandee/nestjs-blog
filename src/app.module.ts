@@ -7,12 +7,13 @@ import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { User } from './users/users.entity';
 import { IsUniqueConstraint } from './shared/validation/is-unique-constraint';
-require("dotenv").config()
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: "postgres",
+      type: 'postgres',
       host: process.env.DB_HOST,
       port: 5432,
       username: process.env.DB_USERNAME,
@@ -20,7 +21,7 @@ require("dotenv").config()
       database: process.env.DB_NAME,
       synchronize: true,
       logging: false,
-      entities: [User]
+      entities: [User],
     }),
     UsersModule,
     AuthModule,
