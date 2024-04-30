@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
 import { EntityManager, Repository } from 'typeorm';
@@ -18,8 +18,11 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<any>{
-    const user = new User(createUserDto);
-
-    return await this.entityManager.save(user);
+    try {
+      const user = new User(createUserDto);
+      return await this.entityManager.save(user);
+    } catch(err) {
+      throw new BadRequestException(err)
+    }
   }
 }
