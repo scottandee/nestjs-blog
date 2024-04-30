@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { User } from './users/users.entity';
+import { IsUniqueConstraint } from './shared/validation/is-unique-constraint';
 require("dotenv").config()
 
 @Module({
@@ -25,6 +26,6 @@ require("dotenv").config()
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService],
+  providers: [AppService, AuthService, IsUniqueConstraint],
 })
 export class AppModule {}

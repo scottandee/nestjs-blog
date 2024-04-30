@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({ name: 'users'})
 export class User {
     @PrimaryGeneratedColumn()
     id: number;
@@ -15,7 +15,9 @@ export class User {
     })
     email: string;
 
-    @Column()
+    @Column({
+      nullable: false,
+    })
     password: string;
 
     constructor(user: Partial<User>) {
