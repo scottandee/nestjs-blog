@@ -18,7 +18,12 @@ export class UsersService {
   ) {}
 
   async findOne(username: string) {
-    const result = await this.usersRepository.findOneBy({ username });
+    const result = await this.usersRepository.findOne({
+      where: {
+        username,
+      },
+      relations: { posts: true, profile: true },
+    });
     if (!result) throw new NotFoundException();
     return result;
   }
@@ -31,8 +36,11 @@ export class UsersService {
         gender: createUserDto.gender,
       });
       const user = new User({
-        ...createUserDto,
+        username: createUserDto.username,
+        password: createUserDto.password,
+        email: createUserDto.email,
         profile,
+        posts: [],
       });
       return await this.entityManager.save(user);
     } catch (err) {

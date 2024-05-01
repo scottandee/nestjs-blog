@@ -34,8 +34,12 @@ export class AuthService {
     if (!owner) {
       throw new UnauthorizedException();
     }
-    const payload = { sub: user.id, username: user.username };
+    const payload = { id: user.id, username: user.username };
 
     return { access_token: await this.jwtService.signAsync(payload) };
+  }
+
+  async getProfile(username: string) {
+    return this.usersService.findOne(username);
   }
 }

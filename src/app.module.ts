@@ -9,6 +9,8 @@ import { User } from './users/entities/users.entity';
 import { IsUniqueConstraint } from './shared/validation/is-unique-constraint';
 import * as dotenv from 'dotenv';
 import { Profile } from './users/entities/profile.entity';
+import { PostsModule } from './posts/posts.module';
+import { Post } from './posts/entities/post.entity';
 dotenv.config();
 
 @Module({
@@ -22,10 +24,11 @@ dotenv.config();
       database: process.env.DB_NAME,
       synchronize: true,
       logging: false,
-      entities: [User, Profile],
+      entities: [User, Profile, Post],
     }),
     UsersModule,
     AuthModule,
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService, IsUniqueConstraint],
