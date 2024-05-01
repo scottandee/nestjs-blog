@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
-import { User } from './users/users.entity';
+import { User } from './users/entities/users.entity';
 import { IsUniqueConstraint } from './shared/validation/is-unique-constraint';
 import * as dotenv from 'dotenv';
+import { Profile } from './users/entities/profile.entity';
 dotenv.config();
 
 @Module({
@@ -21,7 +22,7 @@ dotenv.config();
       database: process.env.DB_NAME,
       synchronize: true,
       logging: false,
-      entities: [User],
+      entities: [User, Profile],
     }),
     UsersModule,
     AuthModule,

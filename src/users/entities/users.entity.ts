@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Profile } from './profile.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -19,6 +26,10 @@ export class User {
     nullable: false,
   })
   password: string;
+
+  @OneToOne(() => Profile, { cascade: true })
+  @JoinColumn()
+  profile: Profile;
 
   constructor(user: Partial<User>) {
     Object.assign(this, user);

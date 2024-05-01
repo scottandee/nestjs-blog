@@ -9,15 +9,15 @@ import {
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { AuthGuard } from './auth.guard';
-import { LoginUserDto } from './dto/log-in.dto';
+import { SignUpUserDto } from './dto/sign-up.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('sign-up')
-  signUp(@Body() loginUserDto: LoginUserDto) {
-    return this.authService.signUp(loginUserDto);
+  signUp(@Body() signUpUserDto: SignUpUserDto) {
+    return this.authService.signUp(signUpUserDto);
   }
 
   @Post('login')

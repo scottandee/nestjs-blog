@@ -3,7 +3,7 @@ import { UsersService } from 'src/users/users.service';
 import { SignInDto } from './dto/sign-in.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { LoginUserDto } from './dto/log-in.dto';
+import { SignUpUserDto } from './dto/sign-up.dto';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -14,14 +14,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signUp(loginUserDto: LoginUserDto) {
+  async signUp(signUpUserDto: SignUpUserDto) {
     // Hash Password
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
-    loginUserDto.password = await bcrypt.hash(loginUserDto.password, salt);
+    signUpUserDto.password = await bcrypt.hash(signUpUserDto.password, salt);
 
     // Call the user sevice sign in method
-    const user = await this.usersService.createUser(loginUserDto);
+    const user = await this.usersService.createUser(signUpUserDto);
     return user;
   }
 
