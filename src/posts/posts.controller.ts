@@ -51,7 +51,7 @@ export class PostsController {
   ) {
     return this.postsService.update(id, updatePostDto);
   }
-  
+
   @UseGuards(PostsGuard)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {

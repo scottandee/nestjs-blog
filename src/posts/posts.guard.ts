@@ -4,9 +4,7 @@ import { PostsService } from './posts.service';
 
 @Injectable()
 export class PostsGuard implements CanActivate {
-  constructor(
-    private readonly postsService: PostsService
-  ) {}
+  constructor(private readonly postsService: PostsService) {}
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
