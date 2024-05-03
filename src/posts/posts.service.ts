@@ -63,11 +63,6 @@ export class PostsService {
   }
 
   async update(id: number, updatePostDto: UpdatePostDto) {
-    // return this.postsRepository.createQueryBuilder()
-    // .update()
-    // .set({ title: updatePostDto.title, content: updatePostDto.content })
-    // .where('post.id = :id', { id })
-    // .execute()
     const post = await this.postsRepository.findOneBy({ id });
     if (!post) {
       throw new NotFoundException();
@@ -78,16 +73,25 @@ export class PostsService {
   }
 
   async remove(id: number) {
-    // return this.postsRepository
-    //   .createQueryBuilder('post')
-    //   .delete()
-    //   .where('post.id = :id', { id })
-    //   .execute()
     const result = await this.postsRepository.delete({ id });
     if (result.affected > 0) {
       return {};
     } else {
       throw new NotFoundException();
     }
+  }
+
+  async isOwner(userId: number, postId: string) {
+    const post = await this.postsRepository.findOne({
+      where: { id: +postId },
+      relations: { author: true },
+    });
+    if (!post) {
+      throw new NotFoundException();
+    }
+    if (post.author.id === userId) {
+      return true;
+    }
+    return false;
   }
 }

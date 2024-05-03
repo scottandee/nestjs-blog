@@ -17,6 +17,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UsersService } from 'src/users/users.service';
+import { PostsGuard } from './posts.guard';
 
 @UseGuards(AuthGuard)
 @Controller('posts')
@@ -42,6 +43,7 @@ export class PostsController {
     return this.postsService.findOne(id);
   }
 
+  @UseGuards(PostsGuard)
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -49,7 +51,8 @@ export class PostsController {
   ) {
     return this.postsService.update(id, updatePostDto);
   }
-
+  
+  @UseGuards(PostsGuard)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.remove(+id);
