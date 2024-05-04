@@ -1,7 +1,17 @@
+import { Comment } from 'src/comments/entities/comment.entity';
+import { Tag } from 'src/tags/entities/tag.entity';
 import { User } from 'src/users/entities/users.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-@Entity()
+@Entity({ name: 'posts' })
 export class Post {
   @PrimaryGeneratedColumn()
   id: number;
@@ -14,6 +24,13 @@ export class Post {
 
   @ManyToOne(() => User, (user) => user.posts)
   author: User;
+
+  @OneToMany(() => Comment, (comment) => comment.post, { cascade: true })
+  comments: Comment[];
+
+  @ManyToMany(() => Tag, { cascade: true })
+  @JoinTable()
+  tags: Tag[];
 
   constructor(post: Partial<Post>) {
     Object.assign(this, post);

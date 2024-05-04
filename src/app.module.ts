@@ -11,6 +11,10 @@ import * as dotenv from 'dotenv';
 import { Profile } from './users/entities/profile.entity';
 import { PostsModule } from './posts/posts.module';
 import { Post } from './posts/entities/post.entity';
+import { TagsModule } from './tags/tags.module';
+import { CommentsModule } from './comments/comments.module';
+import { Comment } from './comments/entities/comment.entity';
+import { Tag } from './tags/entities/tag.entity';
 dotenv.config();
 
 @Module({
@@ -24,11 +28,13 @@ dotenv.config();
       database: process.env.DB_NAME,
       synchronize: true,
       logging: false,
-      entities: [User, Profile, Post],
+      entities: [User, Profile, Post, Tag, Comment],
     }),
     UsersModule,
     AuthModule,
     PostsModule,
+    TagsModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthService, IsUniqueConstraint],

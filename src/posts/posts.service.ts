@@ -5,6 +5,8 @@ import { User } from 'src/users/entities/users.entity';
 import { Post } from './entities/post.entity';
 import { EntityManager, EntityNotFoundError, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Tag } from 'src/tags/entities/tag.entity';
+import { CreateProfileDto } from 'src/users/dto/create-profile.dto';
 
 @Injectable()
 export class PostsService {
@@ -15,7 +17,17 @@ export class PostsService {
   ) {}
 
   async create(user: User, createPostDto: CreatePostDto) {
-    const post = new Post(createPostDto);
+    const post = new Post({
+      title: createPostDto.title,
+      content: createPostDto.content,
+    });
+    createPostDto.tags.forEach(async (tag) => {
+      const result = await this.entityManager.getRepository(Tag).findOne({
+        where: { name: tag.name },
+        relations: { posts: true },
+      });
+      result.posts.push(post);
+    });
     user.posts.push(post);
     await this.entityManager.save(user);
     return post;
@@ -27,15 +39,18 @@ export class PostsService {
     return this.postsRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.author', 'author')
+      .leftJoinAndSelect('post.comments', 'comments')
       .select([
         'post.id',
         'post.title',
         'post.content',
         'author.id',
         'author.username',
+        'comments.id',
+        'comments.content',
       ])
       .skip(skip)
-      .take(10)
+      .take(pageSize)
       .getMany();
   }
 
