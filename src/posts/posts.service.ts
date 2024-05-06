@@ -6,7 +6,6 @@ import { Post } from './entities/post.entity';
 import { EntityManager, EntityNotFoundError, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tag } from 'src/tags/entities/tag.entity';
-import { CreateProfileDto } from 'src/users/dto/create-profile.dto';
 
 @Injectable()
 export class PostsService {
@@ -21,15 +20,17 @@ export class PostsService {
       title: createPostDto.title,
       content: createPostDto.content,
     });
-    createPostDto.tags.forEach(async (tag) => {
+    user.posts.push(post);
+    await this.entityManager.save(user);
+
+    for (const tag of createPostDto.tags) {
       const result = await this.entityManager.getRepository(Tag).findOne({
         where: { name: tag.name },
         relations: { posts: true },
       });
       result.posts.push(post);
-    });
-    user.posts.push(post);
-    await this.entityManager.save(user);
+      await this.entityManager.save(result);
+    }
     return post;
   }
 
@@ -40,6 +41,7 @@ export class PostsService {
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.author', 'author')
       .leftJoinAndSelect('post.comments', 'comments')
+      .leftJoinAndSelect('post.tags', 'tags')
       .select([
         'post.id',
         'post.title',
@@ -48,6 +50,8 @@ export class PostsService {
         'author.username',
         'comments.id',
         'comments.content',
+        'tags.id',
+        'tags.name',
       ])
       .skip(skip)
       .take(pageSize)
@@ -56,19 +60,24 @@ export class PostsService {
 
   async findOne(id: number) {
     try {
-      const result = await this.entityManager
-        .createQueryBuilder(Post, 'post')
+      const result = await this.postsRepository
+        .createQueryBuilder('post')
         .where('post.id = :id', { id })
         .leftJoinAndSelect('post.author', 'author')
+        .leftJoinAndSelect('post.comments', 'comments')
+        .leftJoinAndSelect('post.tags', 'tags')
         .select([
           'post.id',
           'post.title',
           'post.content',
           'author.id',
           'author.username',
+          'comments.id',
+          'comments.content',
+          'tags.id',
+          'tags.name',
         ])
         .getOneOrFail();
-
       return result;
     } catch (err) {
       if (err instanceof EntityNotFoundError) {

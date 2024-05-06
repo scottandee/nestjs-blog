@@ -20,7 +20,7 @@ export class TagsService {
 
   findAll(page: number): Promise<Tag[]> {
     return this.tagsRepository.find({
-      // relations: { posts: true },
+      relations: { posts: true },
       skip: (page - 1) * 10,
       take: 10,
     });

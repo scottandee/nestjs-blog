@@ -1,6 +1,5 @@
 import { IsNotEmpty, IsString, Length } from 'class-validator';
 import { CreateTagDto } from 'src/tags/dto/create-tag.dto';
-import { Tag } from 'src/tags/entities/tag.entity';
 
 export class CreatePostDto {
   @IsNotEmpty()

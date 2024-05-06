@@ -28,7 +28,7 @@ export class Post {
   @OneToMany(() => Comment, (comment) => comment.post, { cascade: true })
   comments: Comment[];
 
-  @ManyToMany(() => Tag, { cascade: true })
+  @ManyToMany(() => Tag, (tag) => tag.posts, { cascade: true })
   @JoinTable()
   tags: Tag[];
 
