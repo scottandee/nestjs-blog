@@ -22,7 +22,7 @@ export class UsersService {
       where: {
         username,
       },
-      relations: { posts: true, profile: true },
+      relations: { posts: true, profile: true, comments: true },
     });
     if (!result) throw new NotFoundException();
     return result;

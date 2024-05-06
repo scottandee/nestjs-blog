@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Comment } from './entities/comment.entity';
 import { EntityManager, Repository } from 'typeorm';
 import { Post } from 'src/posts/entities/post.entity';
+import { User } from 'src/users/entities/users.entity';
 
 @Injectable()
 export class CommentsService {
@@ -13,14 +14,16 @@ export class CommentsService {
     private readonly commentsRepository: Repository<Comment>,
     private readonly entityManager: EntityManager,
   ) {}
-  async create(createCommentDto: CreateCommentDto) {
+  async create(user: User, createCommentDto: CreateCommentDto) {
     const comment = new Comment({ content: createCommentDto.content });
     const post = await this.entityManager.getRepository(Post).findOne({
       where: { id: createCommentDto.post_id },
       relations: { comments: true },
     });
+    user.comments.push(comment);
     post.comments.push(comment);
     await this.entityManager.save(post);
+    await this.entityManager.save(user);
     return comment;
   }
 
