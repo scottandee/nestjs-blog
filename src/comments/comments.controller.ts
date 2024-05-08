@@ -8,12 +8,16 @@ import {
   Delete,
   UseGuards,
   Request,
+  Query,
+  ParseIntPipe,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { UsersService } from 'src/users/users.service';
+import { CommentsGuard } from './comments.guard';
 
 @UseGuards(AuthGuard)
 @Controller('comments')
@@ -30,20 +34,22 @@ export class CommentsController {
   }
 
   @Get()
-  findAll() {
-    return this.commentsService.findAll();
+  findAll(@Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number) {
+    return this.commentsService.findAll(page);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.commentsService.findOne(+id);
   }
 
+  @UseGuards(CommentsGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
     return this.commentsService.update(+id, updateCommentDto);
   }
 
+  @UseGuards(CommentsGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.commentsService.remove(+id);
