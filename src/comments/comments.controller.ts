@@ -45,8 +45,8 @@ export class CommentsController {
 
   @UseGuards(CommentsGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentsService.update(+id, updateCommentDto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateCommentDto: UpdateCommentDto) {
+    return this.commentsService.update(id, updateCommentDto);
   }
 
   @UseGuards(CommentsGuard)
