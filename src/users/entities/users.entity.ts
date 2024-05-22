@@ -6,9 +6,9 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Post } from '../../posts/entities/post.entity';
+import { Comment } from '../../comments/entities/comment.entity';
 import { Profile } from './profile.entity';
-import { Post } from 'src/posts/entities/post.entity';
-import { Comment } from 'src/comments/entities/comment.entity';
 
 @Entity({ name: 'users' })
 export class User {

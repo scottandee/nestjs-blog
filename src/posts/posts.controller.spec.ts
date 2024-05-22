@@ -1,6 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
+import { UsersService } from '../users/users.service';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Post } from './entities/post.entity';
+import { JwtService } from '@nestjs/jwt';
 
 describe('PostsController', () => {
   let controller: PostsController;
@@ -8,7 +12,20 @@ describe('PostsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PostsController],
-      providers: [PostsService],
+      providers: [
+        {
+          provide: UsersService,
+          useClass: jest.fn((x) => x)
+        },
+        {
+          provide: JwtService,
+          useClass: jest.fn(x => x)
+        },
+        {
+          provide: PostsService,
+          useClass: jest.fn(x => x)
+        },
+      ],
     }).compile();
 
     controller = module.get<PostsController>(PostsController);
@@ -17,4 +34,5 @@ describe('PostsController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
 });

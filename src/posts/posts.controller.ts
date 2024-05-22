@@ -15,8 +15,8 @@ import {
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { UsersService } from 'src/users/users.service';
+import { AuthGuard } from '../auth/auth.guard';
+import { UsersService } from '../users/users.service';
 import { PostsGuard } from './posts.guard';
 
 @UseGuards(AuthGuard)

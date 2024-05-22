@@ -15,8 +15,8 @@ import {
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { UsersService } from 'src/users/users.service';
+import { AuthGuard } from '../auth/auth.guard';
+import { UsersService } from '../users/users.service';
 import { CommentsGuard } from './comments.guard';
 
 @UseGuards(AuthGuard)

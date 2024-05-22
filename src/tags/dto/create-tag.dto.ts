@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { IsUnique } from 'src/shared/validation/is-unique';
+import { IsUnique } from '../../shared/validation/is-unique';
 
 export class CreateTagDto {
   @IsNotEmpty()

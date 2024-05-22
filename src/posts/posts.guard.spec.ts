@@ -1,7 +1,13 @@
+import { compileFunction } from 'vm';
 import { PostsGuard } from './posts.guard';
+import { PostsService } from './posts.service';
 
-describe('PostsGuard', () => {
+describe('PostsGuard', () => {  
+
   it('should be defined', () => {
-    expect(new PostsGuard()).toBeDefined();
+    const postsService = {
+      findall: jest.fn(),
+    } as unknown as PostsService;
+    expect(new PostsGuard(postsService)).toBeDefined();
   });
 });

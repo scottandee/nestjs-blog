@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
-import { IsUnique } from 'src/shared/validation/is-unique';
-import { Gender } from 'src/users/entities/profile.entity';
+import { IsUnique } from '../../shared/validation/is-unique';
+import { Gender } from '../../users/entities/profile.entity';
 
 export class SignUpUserDto {
   @IsString()
